@@ -11,6 +11,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@phantomguard/ikcheatniet": "^1.0.0"
+    "@phantomguard/ikcheatniet": "^1.0.2"
   }
 }

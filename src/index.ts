@@ -31,6 +31,12 @@ type CheaterResponse = {
     entries: `${string}:${string}`[];
 }
 
+type IkcheatnietStats = {
+    last_modified: string;
+    total_users: number;
+    total_file_length: number;
+}
+
 class Ikcheatniet {
     private baseUrl: string = "";
     private apiKey: string = "";
@@ -48,12 +54,12 @@ class Ikcheatniet {
         return instance;
     }
 
-    public get stats() {
+    public get stats(): Promise<IkcheatnietStats> {
         const cacheKey = "stats";
         const cachedStats = this.cache.get(cacheKey);
 
         if (cachedStats) {
-            return Promise.resolve(cachedStats);
+            return Promise.resolve(cachedStats) as Promise<IkcheatnietStats>;
         }
 
         const url = `${this.baseUrl}/stats`;
