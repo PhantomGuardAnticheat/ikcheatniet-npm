@@ -1,11 +1,19 @@
-const ikcheatniet = require("../dist/index.cjs").default;
+const Ikcheatniet = require("../dist/index.cjs").default;
 const demoConfig = require("./demo.json");
 
-const api = ikcheatniet.init(demoConfig.key);
+const api = Ikcheatniet.init(demoConfig.key);
 
-(async () => {
+const test = async () => {
   const result = await api.searchUser("1150775432485031936", {
-    type: "discord"
+    type: "cheater"
   });
   console.log(result);
-})()
+}
+
+test()
+  .then(() => {
+    console.log("Test completed successfully.");
+  })
+  .catch((error) => {
+    console.error("Test failed:", error);
+  });

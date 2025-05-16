@@ -1,4 +1,5 @@
 import { request } from "./lib/requests";
+import IkcheatnietReputation from "./lib/reputation";
 
 type DiscordResponse = {
     message: string;
@@ -86,7 +87,7 @@ class Ikcheatniet {
         if (!response.ok) {
             const statusCode = response.status;
 
-            switch(statusCode) {
+            switch (statusCode) {
                 case 401:
                     throw new Error("Unauthorized: Invalid API key.");
 
@@ -100,6 +101,25 @@ class Ikcheatniet {
         } else {
             return response.json() as Promise<CheaterResponse>;
         }
+    }
+
+    public async getUserReputation(user: string | CheaterResponse): Promise<IkcheatnietReputation> {
+        let RepUser = user;
+        if (typeof user === "string") {
+            RepUser = await this.searchUser(user, { type: "cheater", searchType: "single" }) as CheaterResponse;
+        }
+
+        if (!RepUser || !(<CheaterResponse>RepUser).entries) {
+            throw new Error("Invalid response from the API.");
+        }
+
+        const reputation = new IkcheatnietReputation(<CheaterResponse>RepUser);
+
+        if (!reputation) {
+            throw new Error("Failed to create reputation instance.");
+        }
+
+        return reputation;
     }
 }
 
