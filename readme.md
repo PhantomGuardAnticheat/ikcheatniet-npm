@@ -20,7 +20,7 @@ npm install @phantomguard/ikcheatniet
 CommonJS
 
 ```js
-const Ikcheatniet = require("@phantomguard/ikcheatniet").default;;
+const Ikcheatniet = require("@phantomguard/ikcheatniet").default;
 
 const api = Ikcheatniet.init("your_license_key");
 
@@ -66,6 +66,7 @@ test();
 ```
 
 ## API 🛡️
+
 ### Typings can be found [here](#types-)
 
 ```ts
@@ -137,6 +138,14 @@ Gets the reputation amount for a user, it provides a string/number depending on 
 
 ---
 
+```ts
+stats: Promise<IkcheatnietStats>
+```
+
+Get API statistics of Ikcheatniet
+
+---
+
 ## Types 🪪
 
 ```ts
@@ -171,6 +180,12 @@ type CheaterResponse = {
 type IkcheatnietReputation = {
   _reputation: number;
   reputationLevel: "Clean" | "Suspicious" | "Untrusted" | "Cheater";
+};
+
+type IkcheatnietStats = {
+  last_modified: string;
+  total_users: number;
+  total_file_length: number;
 };
 ```
 
