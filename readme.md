@@ -12,7 +12,7 @@ This API allows you to look up Discord user IDs in a database of users associate
 ## Installation 📦
 
 ```bash
-npm install ikcheatniet
+npm install @phantomguard/ikcheatniet
 ```
 
 ## Usage 🚀
@@ -20,7 +20,7 @@ npm install ikcheatniet
 CommonJS
 
 ```js
-const Ikcheatniet = require("ikcheatniet").default;
+const Ikcheatniet = require("@phantomguard/ikcheatniet").default;;
 
 const api = Ikcheatniet.init("your_license_key");
 
@@ -44,7 +44,7 @@ test();
 ES Module
 
 ```mjs
-import Ikcheatniet from "ikcheatniet";
+import Ikcheatniet from "@phantomguard/ikcheatniet";
 
 const api = Ikcheatniet.init("your_license_key");
 
