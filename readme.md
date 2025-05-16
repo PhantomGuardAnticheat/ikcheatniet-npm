@@ -16,12 +16,13 @@ npm install ikcheatniet
 ```
 
 ## Usage
+
 ```js
 const ikcheatniet = require('ikcheatniet');
-
 ```
 
 ## API
 
 ## License
+
 The project is licensed under MIT.

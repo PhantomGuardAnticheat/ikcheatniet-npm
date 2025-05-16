@@ -18,9 +18,28 @@
   },
   "license": "MIT",
   "author": "PhantomGuard",
-  "type": "commonjs",
-  "main": "src/index.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup",
+    "ci": "npm run build && npm run check-exports && npm run lint",
+    "check-exports": "attw --pack .",
+    "lint": "tsc"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.cjs"
+    }
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.1",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
   }
 }
