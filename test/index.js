@@ -9,7 +9,7 @@ const test = async () => {
     });
     console.log(result);
 
-    const tt = await api.getUserReputation(result)
+    const tt = api.getUserReputation(result)
     console.log(tt);
 }
 
