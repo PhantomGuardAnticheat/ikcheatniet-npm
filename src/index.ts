@@ -1,5 +1,6 @@
 import { request } from "./lib/requests";
 import IkcheatnietReputation from "./lib/reputation";
+import Cache from "./lib/cache";
 
 type DiscordResponse = {
     message: string;
@@ -33,16 +34,65 @@ type CheaterResponse = {
 class Ikcheatniet {
     private baseUrl: string = "";
     private apiKey: string = "";
+    private cache: Cache;
 
     private constructor() {
-
+        this.cache = new Cache();
     }
 
-    public static init(apiKey: string, baseUrl?: string): Ikcheatniet {
+    public static init(apiKey: string, baseUrl?: string, cacheTTL?: number): Ikcheatniet {
         const instance = new Ikcheatniet();
         instance.baseUrl = baseUrl || "https://ikcheatniet.phantomguard.eu";
         instance.apiKey = apiKey;
+        instance.cache = new Cache(cacheTTL || 60000);
         return instance;
+    }
+
+    public get stats() {
+        const cacheKey = "stats";
+        const cachedStats = this.cache.get(cacheKey);
+
+        if (cachedStats) {
+            return Promise.resolve(cachedStats);
+        }
+
+        const url = `${this.baseUrl}/stats`;
+        return request(url, {
+            method: "GET",
+            headers: {
+                "Authorization": `${this.apiKey}`,
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            if (!response.ok) {
+                const statusCode = response.status;
+
+                switch (statusCode) {
+                    case 401:
+                        throw new Error("Unauthorized: Invalid API key.");
+
+                    default:
+                        throw new Error(`Error: ${response.statusText} (Status Code: ${statusCode})`);
+                }
+            }
+
+            return response.json();
+        }).then(data => {
+            if (!data || !data.last_modified || !data.total_entries || !data.total_size) {
+                throw new Error("Invalid response from the API.");
+            }
+
+            const stats = {
+                last_modified: data.last_modified,
+                total_users: data.total_entries,
+                total_file_length: data.total_size,
+            };
+
+            this.cache.set(cacheKey, stats);
+            return stats;
+        }).catch(error => {
+            throw new Error(`Failed to fetch stats: ${error.message}`);
+        });
     }
 
     public async searchUser(
@@ -55,6 +105,13 @@ class Ikcheatniet {
             searchType: "single" | "bulk";
         }
     ): Promise<DiscordResponse | CheaterResponse> {
+        const cacheKey = `searchUser:${discordId}:${options?.type}:${options?.searchType}`;
+        const cachedResponse = this.cache.get(cacheKey);
+
+        if (cachedResponse) {
+            return Promise.resolve(cachedResponse) as unknown as DiscordResponse | CheaterResponse;
+        }
+
         if (!this.apiKey) {
             throw new Error("API key is not set. Please initialize the class with a valid API key.");
         }
@@ -96,11 +153,9 @@ class Ikcheatniet {
             }
         }
 
-        if (type === "discord") {
-            return response.json() as Promise<DiscordResponse>;
-        } else {
-            return response.json() as Promise<CheaterResponse>;
-        }
+        const result = await response.json();
+        this.cache.set(cacheKey, result);
+        return result;
     }
 
     public async getUserReputation(user: string | CheaterResponse): Promise<IkcheatnietReputation> {

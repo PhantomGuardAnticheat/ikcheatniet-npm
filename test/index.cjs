@@ -8,6 +8,10 @@ const test = async () => {
     type: "cheater"
   });
   console.log(result);
+
+  const stats = await api.stats;
+
+  console.log(stats);
 }
 
 test()
