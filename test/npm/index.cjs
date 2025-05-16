@@ -1,1 +1,0 @@
-const ikcheatniet = require("@phantomguard/ikcheatniet").default;
