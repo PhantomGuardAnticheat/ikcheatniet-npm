@@ -1,0 +1,26 @@
+{
+  "name": "ikcheatniet",
+  "version": "1.0.0",
+  "description": "This is a NPM package that allows easy usage of the Ikcheatniet API.",
+  "keywords": [
+    "cheater",
+    "anticheat",
+    "lookup",
+    "search"
+  ],
+  "homepage": "https://github.com/PhantomGuardAnticheat/ikcheatniet-npm#readme",
+  "bugs": {
+    "url": "https://github.com/PhantomGuardAnticheat/ikcheatniet-npm/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhantomGuardAnticheat/ikcheatniet-npm.git"
+  },
+  "license": "MIT",
+  "author": "PhantomGuard",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
