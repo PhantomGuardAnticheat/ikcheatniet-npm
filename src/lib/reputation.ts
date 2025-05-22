@@ -15,7 +15,7 @@ class IkcheatnietReputation {
 
     private calculateReputation(entries: `${string}:${string}`[]): number {
         const penalty = entries.length * 10;
-
+        
         return Math.max(0, 100 - penalty);
     }
 
@@ -23,7 +23,7 @@ class IkcheatnietReputation {
         return this._reputation;
     }
 
-    public get reputationLevel(): "Clean" | "Suspicious" | "Untrusted" | "Cheater" {
+    public get reputationLevel(): string {
         if (this._reputation === 100) return "Clean";
         if (this._reputation >= 80) return "Suspicious";
         if (this._reputation >= 50) return "Untrusted";
